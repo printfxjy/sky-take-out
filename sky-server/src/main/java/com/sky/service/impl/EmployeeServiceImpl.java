@@ -53,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //密码比对
         // 对前端传来的密码进行md5加密处理
-        password  = DigestUtils.md5DigestAsHex(password.getBytes());
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
 
 
         if (!password.equals(employee.getPassword())) {
@@ -71,19 +71,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
-
     /**
      * 新增员工
+     *
      * @param employeeDTO
      */
 
     @Override
     public void save(EmployeeDTO employeeDTO) {
-        System.out.println("当前线程的id"+Thread.currentThread().getId());
+        System.out.println("当前线程的id" + Thread.currentThread().getId());
         Employee employee = new Employee();
 
         //对象属性拷贝
-        BeanUtils.copyProperties(employeeDTO,employee);
+        BeanUtils.copyProperties(employeeDTO, employee);
 
         //设置账号的状态
         //用一个常量类表示,1表示正常，0表示锁定
@@ -103,12 +103,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.insert(employee);
 
 
-
-
     }
 
     /**
      * 员工分页查询
+     *
      * @param employeePageQueryDTO
      * @return
      */
@@ -116,14 +115,29 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
         //开始分页查询,页码和每页显示记录数
-        PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
 
         Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
 
         long total = page.getTotal();
         List<Employee> records = page.getResult();
 
-        return new PageResult(total,records);
+        return new PageResult(total, records);
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+//        Employee employee = new Employee();
+//        employee.setStatus(status);
+//        employee.setId(id);
+
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+
+
+        employeeMapper.update(employee);
     }
 
 }
