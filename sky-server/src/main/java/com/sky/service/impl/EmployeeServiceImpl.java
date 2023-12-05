@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.naming.Name;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void save(EmployeeDTO employeeDTO) {
-        System.out.println("当前线程的id" + Thread.currentThread().getId());
+
         Employee employee = new Employee();
 
         //对象属性拷贝
@@ -138,6 +139,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
         employeeMapper.update(employee);
+    }
+
+    @Override
+    public void updateEmployee(EmployeeDTO employeeDTO) {
+//        Employee employee = Employee.builder()
+//                .id(employeeDTO.getId())
+//                .username(employeeDTO.getUsername())
+//                .name(employeeDTO.getName())
+//                .phone(employeeDTO.getPhone())
+//                .sex(employeeDTO.getSex())
+//                .idNumber(employeeDTO.getIdNumber())
+//                .build();
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        employeeMapper.update(employee);
+    }
+
+    @Override
+    public Employee GetEmployeeById(Long id) {
+        Employee employee = employeeMapper.GetEmployeeById(id);
+        employee.setPassword("****");
+        return employee;
     }
 
 }

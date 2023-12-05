@@ -65,8 +65,6 @@ public class EmployeeController {
     }
 
 
-
-
     /**
      * 退出
      *
@@ -123,6 +121,25 @@ public class EmployeeController {
     public Result startOrStop(@PathVariable Integer status,Long id){
         log.info("启用禁用员工账号{},{}",status,id);
         employeeService.startOrStop(status,id);
+        return Result.success();
+    }
+
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<Employee> GetEmployeeById(@PathVariable Long id){
+        log.info("查询员工账号");
+        Employee employee = employeeService.GetEmployeeById(id);
+        return Result.success(employee);
+
+    }
+
+
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    public Result updateEmployee(@RequestBody EmployeeDTO employeeDTO){
+        log.info("编辑员工");
+        employeeService.updateEmployee(employeeDTO);
         return Result.success();
     }
 
