@@ -65,7 +65,7 @@ public class AutoFillAspect {
                 setUpdateTime.invoke(entity,now);
                 setUpdateUser.invoke(entity,currentId);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
 
         }else if (operationType == OperationType.UPDATE){
@@ -74,9 +74,9 @@ public class AutoFillAspect {
                 Method setUpdateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class);
 
                 setUpdateTime.invoke(entity,now);
-                setUpdateUser.invoke(entity,now);
+                setUpdateUser.invoke(entity,currentId);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
 
         }
