@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @Slf4j
 public class JwtTokenAdminInterceptor implements HandlerInterceptor {
+
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -60,4 +63,12 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             return false;
         }
     }
+
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        BaseContext.removeCurrentId();
+    }
+
+
 }
